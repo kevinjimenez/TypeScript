@@ -1,1 +1,1 @@
-# TypeSprint
+# TypeScript

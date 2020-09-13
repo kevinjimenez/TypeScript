@@ -6,6 +6,9 @@
 
 let myObj = { size: 12, label: 'kevin' }
 imprimirLabel(myObj);*/
+
+import { Interface } from "readline";
+
 // INTERFACES
 interface LabeledValUe {
     label: string;
@@ -90,7 +93,195 @@ interface StringArray {
 }
 
 let myArreglo: StringArray;
-myArreglo = ['qw','qw','qe'];
+myArreglo = ['qw', 'qw', 'qe'];
 
 myArreglo[0];
 
+
+interface Animal {
+    name: string;
+}
+
+interface Dog extends Animal {
+    breed: string;
+}
+
+// mismo tipo de indice
+interface notOkay {
+    [x: number]: Animal;
+    // [x: string]: Dog
+}
+// el retorno de los tipo debe ser el mismo
+interface NumberDictonary {
+    [index: string]: number;
+    lengyh: number
+    // name: string
+}
+// la union de tipos ayuda, el retorno de los tipo debe ser el mismo
+interface NumberOrStringDictonary {
+    [index: string]: number | string;
+    lengyh: number;
+    name: string;
+}
+// indices de lectura 
+interface ReadonlyStringArray {
+    readonly [index: number]: string
+}
+
+let myArray: ReadonlyStringArray = ['alice', 'bob']
+// myArray[2] = "jko";
+
+// TIPOS CLASES
+interface ClockInterface {
+    currentTIme: Date;
+}
+
+class CLock implements ClockInterface {
+    currentTIme: Date = new Date();
+    constructor(h: number, m: number) { }
+}
+
+interface ClockInterface2 {
+    currentTIme: Date;
+    setTime(d: Date): void;
+}
+// interfaz con metodos para la clase
+class CLock2 implements ClockInterface2 {
+    currentTIme: Date = new Date();
+    constructor(h: number, m: number) { }
+
+    setTime(d: Date) {
+        this.currentTIme = d;
+    }
+}
+
+// error con instancia
+interface ClockConstructor {
+    new(hour: number, min: number);
+}
+
+/*class clock3 implements ClockConstructor {
+    currentime: Date;
+    constructor(h: number, m: number) { }
+}*/
+
+// correcion con la instancia
+interface ClockConstructor2 {
+    new(hour: number, min: number): ClockInterface4;
+}
+
+interface ClockInterface4 {
+    tick(): void
+}
+
+function createClock(
+    ctor: ClockConstructor2,
+    hour: number,
+    min: number
+): ClockInterface4 {
+    return new ctor(hour, min);
+}
+
+class DigitalClock implements ClockInterface4 {
+    constructor(h: number, m: number) { }
+    tick() {
+        console.log('beeeeeeep beeeeeeep');
+    }
+}
+
+class AnalogiClock implements ClockInterface4 {
+    constructor(h: number, m: number) { }
+    tick() {
+        console.log('beeeeeeep beeeeeeep');
+    }
+}
+
+let digital = createClock(DigitalClock, 12, 23);
+let analogico = createClock(AnalogiClock, 12, 23);
+
+// 2da forma
+
+interface ClockConstructor3 {
+    new(hour: number, min: number): ClockInterface4;
+}
+
+interface ClockInterface4 {
+    tick(): void
+}
+
+const Clock: ClockConstructor3 = class Clock implements ClockInterface4 {
+    constructor(h: number, m: number) { }
+    tick() {
+        console.log('kho kho');
+    }
+}
+// EXTENCION DE INTERFACES
+
+interface forma {
+    color: string;
+}
+
+interface cuadrado extends forma {
+    tamanoLado: number;
+}
+
+let cuadrado = {} as cuadrado
+cuadrado.color = 'rojo';
+cuadrado.tamanoLado = 23;
+
+interface penStroke {
+    penWidth: number;
+}
+
+interface cuadrado2 extends forma, penStroke {
+    lada: number
+}
+let cuadrado2 = {} as cuadrado2;
+cuadrado2.color = 'rojo';
+cuadrado2.lada = 2;
+cuadrado2.penWidth = 23;
+
+// TIPOS HIBRIDOS
+interface counter{
+    (inicio: number): string;
+    intervalo: number;
+    reset(): void;
+}
+
+function getCOunter(): counter{
+    // let couter = ((inicuio: number)=>{}) as counter;
+    let couter = function(inicuio: number){} as counter;
+    couter.intervalo = 123;
+    couter.reset = ()=>{
+        console.log('khe')
+    };
+    return couter;
+}
+
+let c = getCOunter();
+c(10)
+c.reset()
+c.intervalo = 5.8;
+// console.log(c.reset())
+
+// HERENCIA DE CLASES EN INTERFACES
+
+class control {
+    private state: any;
+}
+
+interface SeleccionBoton extends control {
+    select(): void;
+}
+
+class button extends control implements SeleccionBoton{    
+    select(){
+
+    }
+}
+// dee ser heradero del padre
+/*class imagen implements SeleccionBoton{
+    select(){
+
+    }
+}*/

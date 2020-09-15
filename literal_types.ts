@@ -22,3 +22,18 @@ class elementoUI{
 let boton = new elementoUI();
 boton.animacion(0,0,'ease-in');
 // boton.animacion(0,0,'aaaa');
+
+// BOOLEAN
+interface ValidationSuccess {
+    isValid: true;
+    reason: null;
+  };
+  
+  interface ValidationFailure {
+    isValid: false;
+    reason: string;
+  };
+  
+  type ValidationResult =
+    | ValidationSuccess
+    | ValidationFailure;
